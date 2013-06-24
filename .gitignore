@@ -1,0 +1,10 @@
+#visual studio output and temporaries
+
+Debug/
+Release/
+hlsl2agal/Debug/
+hlsl2agal/Release/
+png2surface/Debug/
+png2surface/Release/
+shared/Debug/
+shared/Release/

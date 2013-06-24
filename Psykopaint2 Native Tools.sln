@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shared", "shared\shared.vcxproj", "{DD291A5A-B750-48F2-A43C-3995B9EDE972}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "png2surface", "png2surface\png2surface.vcxproj", "{62E006A8-51E5-430F-862D-3078C39DB5A9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD291A5A-B750-48F2-A43C-3995B9EDE972} = {DD291A5A-B750-48F2-A43C-3995B9EDE972}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hlsl2agal", "hlsl2agal\hlsl2agal.vcxproj", "{287F6500-CD93-414E-A5B3-FE8855AA810E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD291A5A-B750-48F2-A43C-3995B9EDE972}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DD291A5A-B750-48F2-A43C-3995B9EDE972}.Debug|Win32.Build.0 = Debug|Win32
+		{DD291A5A-B750-48F2-A43C-3995B9EDE972}.Release|Win32.ActiveCfg = Release|Win32
+		{DD291A5A-B750-48F2-A43C-3995B9EDE972}.Release|Win32.Build.0 = Release|Win32
+		{62E006A8-51E5-430F-862D-3078C39DB5A9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{62E006A8-51E5-430F-862D-3078C39DB5A9}.Debug|Win32.Build.0 = Debug|Win32
+		{62E006A8-51E5-430F-862D-3078C39DB5A9}.Release|Win32.ActiveCfg = Release|Win32
+		{62E006A8-51E5-430F-862D-3078C39DB5A9}.Release|Win32.Build.0 = Release|Win32
+		{287F6500-CD93-414E-A5B3-FE8855AA810E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{287F6500-CD93-414E-A5B3-FE8855AA810E}.Debug|Win32.Build.0 = Debug|Win32
+		{287F6500-CD93-414E-A5B3-FE8855AA810E}.Release|Win32.ActiveCfg = Release|Win32
+		{287F6500-CD93-414E-A5B3-FE8855AA810E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
