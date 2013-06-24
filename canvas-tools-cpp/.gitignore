@@ -1,0 +1,24 @@
+#visual studio output and temporaries
+
+Debug/
+Release/
+hlsl2agal/Debug/
+hlsl2agal/Release/
+png2surface/Debug/
+png2surface/Release/
+shared/Debug/
+shared/Release/
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
