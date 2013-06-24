@@ -82,6 +82,9 @@
   <ItemGroup>
     <ClCompile Include="lodepng.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\zlibwapi.lib" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

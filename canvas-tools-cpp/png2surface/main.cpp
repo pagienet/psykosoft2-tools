@@ -4,10 +4,11 @@
 #include <sstream>
 #include <vector>
 #include "lodepng.h"
+#include "zlib.h"
 
 const float canvasSpecularity = 1.0f;
 const float canvasGloss = 200.0f;
-const float canvasBumpiness = 20.0f;
+const float canvasBumpiness = 5.0f;
 
 struct ImageData
 {
@@ -23,6 +24,7 @@ struct InputData
 	std::string outputFilename;	
 	float maxSpecularity;
 	float maxGloss;
+	float bumpiness;
 };
 
 float GetFloatArg(int* i, int argc, char* argv[])
@@ -63,6 +65,8 @@ void ParseArgument(InputData* args, int* i, int argc, char* argv[])
 		args->maxSpecularity = GetFloatArg(i, argc, argv);
 	else if (argumentType == "-mg" || argumentType == "-maxgloss")
 		args->maxSpecularity = GetFloatArg(i, argc, argv);
+	else if (argumentType == "-b" || argumentType == "-bumpiness")
+		args->bumpiness = GetFloatArg(i, argc, argv);
 }
 
 InputData ParseArgs(int argc, char* argv[])
@@ -70,6 +74,7 @@ InputData ParseArgs(int argc, char* argv[])
 	InputData args;
 	args.maxSpecularity = canvasSpecularity;
 	args.maxGloss = canvasGloss;
+	args.bumpiness = 1.0f;
 
 	int i = 0;
 	
@@ -127,8 +132,8 @@ ImageData Convert(const InputData& settings, const ImageData& normals, const Ima
 		unsigned char specularity = int(specular.bytes[i] / canvasSpecularity * settings.maxSpecularity) & 0xff;
 		unsigned char gloss = int(specular.bytes[i+1] / canvasGloss * settings.maxGloss) & 0xff;
 
-		normalX /= canvasBumpiness;
-		normalY /= canvasBumpiness;
+		normalX /= canvasBumpiness*settings.bumpiness;
+		normalY /= canvasBumpiness*settings.bumpiness;
 		normalX = normalX * .5f + .5f;
 		normalY = -normalY * .5f + .5f;	// invert Y
 
