@@ -1,5 +1,6 @@
 #visual studio output and temporaries
 
+*.opensdf
 Debug/
 Release/
 hlsl2agal/Debug/
