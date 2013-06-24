@@ -3,29 +3,8 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include "lodepng.h"
-#include "zlib.h"
-
-const float canvasSpecularity = 1.0f;
-const float canvasGloss = 200.0f;
-const float canvasBumpiness = 5.0f;
-
-struct ImageData
-{
-	unsigned int width;
-	unsigned int height;
-	std::vector<unsigned char> bytes;
-};
-
-struct InputData
-{
-	std::string normalMapFilename;
-	std::string specularMapFilename;	
-	std::string outputFilename;	
-	float maxSpecularity;
-	float maxGloss;
-	float bumpiness;
-};
+#include "convert.h"
+#include "compress.h"
 
 float GetFloatArg(int* i, int argc, char* argv[])
 {
@@ -103,65 +82,7 @@ bool IsDataValid(const InputData& data)
 	return true;
 }
 
-ImageData LoadPNG(std::string filename)
-{
-	ImageData data;
-	unsigned error = lodepng::decode(data.bytes, data.width, data.height, filename);
 
-	//if there's an error, display it
-	if(error) {
-		std::cout << "Error decoding PNG " << filename << ": " << error << ": " << lodepng_error_text(error) << std::endl;
-		exit(1);
-	}
-
-	return data;
-}
-
-ImageData Convert(const InputData& settings, const ImageData& normals, const ImageData& specular)
-{
-	ImageData data;
-	
-	data.width = normals.width;
-	data.height = normals.height;
-	unsigned int len = data.width*data.height*4;
-	data.bytes.resize(len);
-
-	for (unsigned int i = 0; i < len; i += 4) {
-		float normalX = normals.bytes[i] / 127.5f - 1.0f;	// mapped to 0 - 1
-		float normalY = normals.bytes[i+1] / 127.5f - 1.0f;
-		unsigned char specularity = int(specular.bytes[i] / canvasSpecularity * settings.maxSpecularity) & 0xff;
-		unsigned char gloss = int(specular.bytes[i+1] / canvasGloss * settings.maxGloss) & 0xff;
-
-		normalX /= canvasBumpiness*settings.bumpiness;
-		normalY /= canvasBumpiness*settings.bumpiness;
-		normalX = normalX * .5f + .5f;
-		normalY = -normalY * .5f + .5f;	// invert Y
-
-		// ouput as BGRA
-		data.bytes[i] = specularity;
-		data.bytes[i+1] = int(normalY * 255.0f);
-		data.bytes[i+2] = int(normalX * 255.0f);
-		data.bytes[i+3] = gloss;
-	}
-
-	return data;
-}
-
-void Process(const InputData& data)
-{
-	// order is RGBA, 32bits per pixel
-	ImageData normalData = LoadPNG(data.normalMapFilename);
-	ImageData specularData = LoadPNG(data.specularMapFilename);
-
-	if (normalData.width != specularData.width || normalData.height != specularData.height) {
-		std::cout << "Dimension mismatch!" << std::endl;
-		exit(1);
-	}
-
-	ImageData converted = Convert(data, normalData, specularData);
-	std::ofstream outputStream(data.outputFilename, std::ios::out | std::ios::binary );
-	outputStream.write((const char*)converted.bytes.data(), converted.width*converted.height*4);
-}
 
 int main(int argc, char* argv[])
 {
@@ -170,7 +91,18 @@ int main(int argc, char* argv[])
 	try {
 		InputData inputData = ParseArgs(argc, argv);
 		if (!IsDataValid(inputData)) return 1;
-		Process(inputData);
+		
+		ImageData converted = ProcessInputData(inputData);
+		std::vector<unsigned char> output;
+		int result = CompressFile(converted.bytes, output);
+		if (result != 0) {
+			std::cout << "Compression error occurred" << std::endl;
+			exit(1);
+		}
+
+		std::ofstream outputStream(inputData.outputFilename, std::ios::out | std::ios::binary );
+		outputStream.write((const char*)output.data(), output.size());
+		
 	}
 	catch(std::exception& error) {
 		std::cout << "Error: " << error.what() << std::endl;
