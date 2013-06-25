@@ -35,10 +35,10 @@ ImageData Convert(const InputData& settings, const ImageData& normals, const Ima
 		unsigned char specularity = int(specular.bytes[i] / canvasSpecularity * settings.maxSpecularity) & 0xff;
 		unsigned char gloss = int(specular.bytes[i+1] / canvasGloss * settings.maxGloss) & 0xff;
 
-		normalX /= canvasBumpiness*settings.bumpiness;
-		normalY /= canvasBumpiness*settings.bumpiness;
-		normalX = normalX * .5f + .5f;
-		normalY = -normalY * .5f + .5f;	// invert Y
+		normalX /= canvasBumpiness;
+		normalY /= canvasBumpiness;
+		normalX = normalX * .5f * settings.bumpiness + .5f;
+		normalY = -normalY * .5f * settings.bumpiness + .5f;	// invert Y
 
 		// ouput as BGRA
 		data.bytes[i] = specularity;
