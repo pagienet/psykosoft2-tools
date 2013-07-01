@@ -6,6 +6,7 @@ namespace psyko
 	static void Replace(const PixelShader& original, PixelShader* target, const Statement& statement, unsigned int i);
 	static void RemoveNegationFromSUB(const PixelShader& original, PixelShader* target, const Statement& statement, unsigned int i);
 	static void RemoveNegationFromADD(const PixelShader& original, PixelShader* target, const Statement& statement, unsigned int i);
+	static void RemoveNegationFromMUL(const PixelShader& original, PixelShader* target, const Statement& statement, unsigned int i);
 	static void RemoveNegationFromMOV(const PixelShader& original, PixelShader* target, const Statement& statement, unsigned int i);
 	static void ExtractNegation(const PixelShader& original, PixelShader* target, const Statement& statement, unsigned int i);
 
@@ -39,7 +40,9 @@ namespace psyko
 		else if (statement.opcode == Opcode::SUB)
 			RemoveNegationFromSUB(original, target, statement, i);
 		else if (statement.opcode == Opcode::MOV)
-			RemoveNegationFromMOV(original, target, statement, i);			
+			RemoveNegationFromMOV(original, target, statement, i);
+		else if (statement.opcode == Opcode::MUL)
+			RemoveNegationFromMUL(original, target, statement, i);
 		else 
 			ExtractNegation(original, target, statement, i);
 	}
@@ -142,6 +145,24 @@ namespace psyko
 			rep.opcode = Opcode::NEG;
 			target->PushStatement(rep);
 		}
+	}
+
+	void RemoveNegationFromMUL(const PixelShader& original, PixelShader* target, const Statement& statement, unsigned int i)
+	{
+		Statement mul;
+		mul.opcode = Opcode::MUL;
+		mul.destination = statement.destination;
+		mul.source1 = statement.source2;
+		mul.source2 = statement.source1;
+		mul.source1.negated = false;
+		mul.source2.negated = false;			
+		target->PushStatement(mul);
+
+		Statement neg;
+		neg.opcode = Opcode::NEG;
+		neg.destination = statement.destination;
+		neg.source1.registerEntry = statement.destination;
+		target->PushStatement(neg);
 	}
 
 	void ExtractNegation(const PixelShader& original, PixelShader* target, const Statement& statement, unsigned int i)
