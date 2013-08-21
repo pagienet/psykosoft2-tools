@@ -20,7 +20,7 @@ ImageData LoadPNG(std::string filename)
 	return data;
 }
 
-ImageData Convert(const InputData& settings, const ImageData& normals, const ImageData& specular)
+ImageData ConvertNormalSpecular(const InputData& settings, const ImageData& normals, const ImageData& specular)
 {
 	ImageData data;
 	
@@ -50,7 +50,28 @@ ImageData Convert(const InputData& settings, const ImageData& normals, const Ima
 	return data;
 }
 
-ImageData ProcessInputData(const InputData& data)
+ImageData ProcessColor(const InputData& data)
+{
+	ImageData inputData = LoadPNG(data.albedoFilename);
+	ImageData outputData;
+
+	outputData.width = inputData.width;
+	outputData.height = inputData.height;
+	unsigned int len = outputData.width*outputData.height * 4;
+	outputData.bytes.resize(len);
+
+	for (unsigned int i = 0; i < len; i += 4) {
+		// convert RGBA to BGRA
+		outputData.bytes[i] = inputData.bytes[i + 2];
+		outputData.bytes[i + 1] = inputData.bytes[i + 1];
+		outputData.bytes[i + 2] = inputData.bytes[i];
+		outputData.bytes[i + 3] = inputData.bytes[i + 3];
+	}
+
+	return outputData;
+}
+
+ImageData ProcessNormalSpecular(const InputData& data)
 {
 	// order is RGBA, 32bits per pixel
 	ImageData normalData = LoadPNG(data.normalMapFilename);
@@ -61,5 +82,13 @@ ImageData ProcessInputData(const InputData& data)
 		exit(1);
 	}
 
-	return Convert(data, normalData, specularData);
+	return ConvertNormalSpecular(data, normalData, specularData);
+}
+
+ImageData ProcessInputData(const InputData& data)
+{
+	if (data.albedoFilename != "")
+		return ProcessColor(data);
+	else
+		return ProcessNormalSpecular(data);
 }

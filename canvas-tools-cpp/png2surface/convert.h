@@ -16,6 +16,7 @@ struct ImageData
 
 struct InputData
 {
+	std::string albedoFilename;
 	std::string normalMapFilename;
 	std::string specularMapFilename;	
 	std::string outputFilename;	
