@@ -42,9 +42,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(SolutionDir)\shared\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(SolutionDir)\shared\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -77,12 +79,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="commandline.h" />
+    <ClInclude Include="compress.h" />
+    <ClInclude Include="image.h" />
     <ClInclude Include="lodepng.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="commandline.cpp" />
+    <ClCompile Include="compress.cpp" />
+    <ClCompile Include="image.cpp" />
     <ClCompile Include="lodepng.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="lib\zlibstat.lib" />
     <Library Include="lib\zlibwapi.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

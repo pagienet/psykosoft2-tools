@@ -2,17 +2,11 @@
 #define __PSYKO_CONVERT_H__
 
 #include <vector>
+#include "image.h"
 
 extern const float canvasSpecularity;
 extern const float canvasGloss;
 extern const float canvasBumpiness;
-
-struct ImageData
-{
-	unsigned int width;
-	unsigned int height;
-	std::vector<unsigned char> bytes;
-};
 
 struct InputData
 {

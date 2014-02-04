@@ -6,20 +6,6 @@ const float canvasSpecularity = 1.0f;
 const float canvasGloss = 200.0f;
 const float canvasBumpiness = 5.0f;
 
-ImageData LoadPNG(std::string filename)
-{
-	ImageData data;
-	unsigned error = lodepng::decode(data.bytes, data.width, data.height, filename);
-
-	//if there's an error, display it
-	if(error) {
-		std::cout << "Error decoding PNG " << filename << ": " << error << ": " << lodepng_error_text(error) << std::endl;
-		exit(1);
-	}
-
-	return data;
-}
-
 ImageData ConvertNormalSpecular(const InputData& settings, const ImageData& normals, const ImageData& specular)
 {
 	ImageData data;

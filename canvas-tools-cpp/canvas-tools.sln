@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shared", "shared\shared.vcxproj", "{DD291A5A-B750-48F2-A43C-3995B9EDE972}"
 EndProject
@@ -11,6 +11,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "png2surface", "png2surface\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "normal2height", "normal2height\normal2height.vcxproj", "{528A207C-F637-4385-9DCB-783B9BCDA2A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD291A5A-B750-48F2-A43C-3995B9EDE972} = {DD291A5A-B750-48F2-A43C-3995B9EDE972}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "surface2normal", "surface2normal\surface2normal.vcxproj", "{CF048C19-0BBF-4A20-809F-3CDC1684E0A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD291A5A-B750-48F2-A43C-3995B9EDE972} = {DD291A5A-B750-48F2-A43C-3995B9EDE972}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +38,10 @@ Global
 		{528A207C-F637-4385-9DCB-783B9BCDA2A3}.Debug|Win32.Build.0 = Debug|Win32
 		{528A207C-F637-4385-9DCB-783B9BCDA2A3}.Release|Win32.ActiveCfg = Release|Win32
 		{528A207C-F637-4385-9DCB-783B9BCDA2A3}.Release|Win32.Build.0 = Release|Win32
+		{CF048C19-0BBF-4A20-809F-3CDC1684E0A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CF048C19-0BBF-4A20-809F-3CDC1684E0A6}.Debug|Win32.Build.0 = Debug|Win32
+		{CF048C19-0BBF-4A20-809F-3CDC1684E0A6}.Release|Win32.ActiveCfg = Release|Win32
+		{CF048C19-0BBF-4A20-809F-3CDC1684E0A6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,20 +14,6 @@ struct point
 	double x, y;
 };
 
-ImageData LoadPNG(std::string filename)
-{
-	ImageData data;
-	unsigned error = lodepng::decode(data.bytes, data.width, data.height, filename);
-
-	//if there's an error, display it
-	if(error) {
-		std::cout << "Error decoding PNG " << filename << ": " << error << ": " << lodepng_error_text(error) << std::endl;
-		exit(1);
-	}
-
-	return data;
-}
-
 inline bool IsInBounds(const point& pos, const ImageData& inputData)
 {
 	// todo: might want to improve bottom and right edges (remove - 1 and solve in interpolation)

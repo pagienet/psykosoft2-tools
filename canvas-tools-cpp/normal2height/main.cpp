@@ -1,33 +1,9 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "commandline.h"
 #include "convert.h"
-#include "lodepng.h"
-
-template<class T>
-T GetArg(int* i, int argc, char* argv[])
-{
-	if (*i == argc) {
-		std::cout << "Unexpected end of arguments";
-		throw std::exception();
-	}
-
-	std::string str = argv[(*i)++];
-	std::stringstream stream(str);
-	T value = 0;
-	stream >> value;
-	return value;
-}
-
-std::string GetStringArg(int* i, int argc, char* argv[])
-{
-	if (*i == argc) {
-		std::cout << "Unexpected end of arguments";
-		throw std::exception();
-	}
-
-	return argv[(*i)++];
-}
+#include "image.h"
 
 void ParseArgument(InputData* args, int* i, int argc, char* argv[])
 {
@@ -47,7 +23,7 @@ InputData ParseArgs(int argc, char* argv[])
 {
 	InputData args;
 	args.quality = 30;
-	args.range = .05;
+	args.range = .05f;
 
 	int i = 0;
 
@@ -81,15 +57,9 @@ int main(int argc, char* argv [])
 		if (!IsDataValid(inputData)) return 1;
 
 		ImageData converted = ProcessInputData(inputData, inputData.quality, inputData.range);
-		std::vector<unsigned char> output;
+		
 		// output 16-bits grey-scale pngs for precision
-		lodepng::encode(output, converted.bytes, converted.width, converted.height, LodePNGColorType::LCT_GREY, 16);
-		std::ofstream outputStream(inputData.outputFilename, std::ios::out | std::ios::binary);
-		if (!outputStream.is_open()) {
-			std::cout << "Error: Could not open " << inputData.outputFilename << " for writing" << std::endl;
-			return 1;
-		}
-		outputStream.write((const char*) output.data(), output.size());
+		SavePNG(inputData.outputFilename, converted, LodePNGColorType::LCT_GREY, 16);
 	}
 	catch (std::exception& error) {
 		std::cout << "Error: " << error.what() << std::endl;
